@@ -1,0 +1,531 @@
+openapi: 3.0.1
+info:
+  title: Swagger API MicMac
+  description: Server for API MicMac
+  termsOfService: http://swagger.io/terms/
+  contact:
+    email: apiteam@swagger.io
+  license:
+    name: Apache 2.0
+    url: http://www.apache.org/licenses/LICENSE-2.0.html
+  version: 1.0.0
+externalDocs:
+  description: Find out more about Swagger
+  url: http://swagger.io
+servers:
+- url: https://localhost/
+- url: http://localhost/
+tags:
+- name: calib
+  description: Calibration files
+- name: point2d
+  description: 2D support points 
+- name: point3d
+  description: 3D support points 
+- name: aspro
+  description: Command MicMac aspro
+  externalDocs:
+    description: Find out more about MicMac aspro command
+    url: https://micmac.ensg.eu/index.php/Aspro
+paths:
+  /calib/{imgURL}/{PP}/{F}/{SzIm}/{Cdist}/:
+    get:
+      tags:
+      - calib
+      summary: Create calibration file from metadata
+      description: Returns xml file describing calibration
+      operationId: getCalib
+      parameters:
+      - name: imgURL
+        in: path
+        description: URL of the image
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+          format: int64
+      - name: PP
+        in: path
+        description: Principal point
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: array
+          items:
+            type: integer
+      - name: F
+        in: path
+        description: Focal
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: integer
+          format: int64
+      - name: SzIm
+        in: path
+        description: Size of the image
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: array
+          items:
+            type: integer
+      - name: Cdist
+        in: path
+        description: Distorsion coefficient
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: array
+          items:
+            type: integer
+      responses:
+        "200":
+          description: A xml calibration file
+          content:
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/Calibration'
+        "400":
+          description: Invalid parameters supplied
+          content: {}
+        "404":
+          description: Image not found
+          content: {}
+      x-swagger-router-controller: Calib
+  /point2d/{imgURL}/{coordPoint2d}:
+    get:
+      tags:
+      - point2d
+      summary: Create file containing 2D support points
+      description: Returns xml file describing coordinates of 2D points
+      operationId: get2dPointOfAppuiFile
+      parameters:
+      - name: imgURL
+        in: path
+        description: URL of the image
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+          format: int64
+      - name: coordPoint2d
+        in: path
+        description: ID of pet that needs to be fetched
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: array
+          items:
+            type: array
+            items:
+              type: number
+      responses:
+        "200":
+          description: successful operation
+          content:
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/Point2d'
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Point2d'
+        "400":
+          description: Invalid parameters supplied
+          content: {}
+        "404":
+          description: Image not found
+          content: {}
+      x-swagger-router-controller: Point2d
+  /point3d/{imgURL}/{coordPoint3d}:
+    get:
+      tags:
+      - point3d
+      summary: Create file containing 3D support points
+      description: Returns xml file describing coordinates of 3D points
+      operationId: get3dPointOfAppuiFile
+      parameters:
+      - name: imgURL
+        in: path
+        description: URL of the image
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+          format: int64
+      - name: coordPoint3d
+        in: path
+        description: ID of pet that needs to be fetched
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: array
+          items:
+            type: array
+            items:
+              type: number
+      responses:
+        "200":
+          description: successful operation
+          content:
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/Point3d'
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Point3d'
+        "400":
+          description: Invalid parameters supplied
+          content: {}
+        "404":
+          description: Image not found
+          content: {}
+      x-swagger-router-controller: Point3d
+  /aspro/{imgURL}/{autoCal}/{appui}/{gcp}:
+    post:
+      tags:
+      - aspro
+      summary: Launch MicMac command aspro
+      description: Calculate orientation file of the image
+      operationId: getOrientation
+      parameters:
+      - name: imgURL
+        in: path
+        description: URL of the image
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+          format: int64
+      - name: autoCal
+        in: path
+        description: Calibration file
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+          format: byte
+      - name: appui
+        in: path
+        description: 2D support points file
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+          format: byte
+      - name: gcp
+        in: path
+        description: 3D support points file
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+          format: byte
+      responses:
+        "200":
+          description: successful operation
+          content:
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/Orientation'
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Orientation'
+        "400":
+          description: Invalid parameters supplied
+          content: {}
+        "404":
+          description: Image not found
+          content: {}
+      x-swagger-router-controller: Aspro
+components:
+  schemas:
+    Calibration:
+      type: object
+      properties:
+        NameIn:
+          type: string
+          format: int64
+        CalibrationInternConique:
+          type: array
+          items:
+            $ref: '#/components/schemas/CalibrationInternConique'
+      example:
+        NameIn: NameIn
+        CalibrationInternConique:
+        - PP:
+          - 0
+          - 0
+          F: 6.02745618307040320615897144307382404804229736328125
+          KnownConv: KnownConv
+          SzIm:
+          - 1
+          - 1
+          CalibDistorsion:
+          - Cdist: 5.962133916683182377482808078639209270477294921875
+          - Cdist: 5.962133916683182377482808078639209270477294921875
+        - PP:
+          - 0
+          - 0
+          F: 6.02745618307040320615897144307382404804229736328125
+          KnownConv: KnownConv
+          SzIm:
+          - 1
+          - 1
+          CalibDistorsion:
+          - Cdist: 5.962133916683182377482808078639209270477294921875
+          - Cdist: 5.962133916683182377482808078639209270477294921875
+      xml:
+        name: ExportApero
+    CalibrationInternConique:
+      type: object
+      properties:
+        KnownConv:
+          type: string
+          format: int64
+        PP:
+          type: array
+          items:
+            type: integer
+        F:
+          type: number
+          format: int64
+        SzIm:
+          type: array
+          items:
+            type: integer
+        CalibDistorsion:
+          type: array
+          xml:
+            name: CalibDistorsion
+            wrapped: true
+          items:
+            $ref: '#/components/schemas/ModRad'
+      example:
+        PP:
+        - 0
+        - 0
+        F: 6.02745618307040320615897144307382404804229736328125
+        KnownConv: KnownConv
+        SzIm:
+        - 1
+        - 1
+        CalibDistorsion:
+        - Cdist: 5.962133916683182377482808078639209270477294921875
+        - Cdist: 5.962133916683182377482808078639209270477294921875
+      xml:
+        name: CalibrationInternConique
+    ModRad:
+      type: object
+      properties:
+        Cdist:
+          type: number
+          format: int64
+      example:
+        Cdist: 5.962133916683182377482808078639209270477294921875
+      xml:
+        name: ModRad
+    Point2d:
+      type: object
+      properties:
+        MesureAppuiFlottant1Im:
+          type: array
+          items:
+            $ref: '#/components/schemas/MesureAppuiFlottant1Im'
+      example:
+        MesureAppuiFlottant1Im:
+        - OneMesureAF1I:
+          - NamePt: 0
+            PtIm:
+            - 6
+            - 6
+          - NamePt: 0
+            PtIm:
+            - 6
+            - 6
+          NameIm: NameIm
+        - OneMesureAF1I:
+          - NamePt: 0
+            PtIm:
+            - 6
+            - 6
+          - NamePt: 0
+            PtIm:
+            - 6
+            - 6
+          NameIm: NameIm
+      xml:
+        name: SetOfMesureAppuisFlottants
+    MesureAppuiFlottant1Im:
+      type: object
+      properties:
+        NameIm:
+          type: string
+          format: int64
+        OneMesureAF1I:
+          type: array
+          items:
+            $ref: '#/components/schemas/OneMesureAF1I'
+      example:
+        OneMesureAF1I:
+        - NamePt: 0
+          PtIm:
+          - 6
+          - 6
+        - NamePt: 0
+          PtIm:
+          - 6
+          - 6
+        NameIm: NameIm
+    OneMesureAF1I:
+      type: object
+      properties:
+        NamePt:
+          type: integer
+          format: int64
+        PtIm:
+          type: array
+          items:
+            type: integer
+      example:
+        NamePt: 0
+        PtIm:
+        - 6
+        - 6
+    Point3d:
+      type: object
+      properties:
+        NameIm:
+          type: string
+          format: int64
+        DicoAppuisFlottant:
+          type: array
+          items:
+            $ref: '#/components/schemas/DicoAppuisFlottant'
+      example:
+        DicoAppuisFlottant:
+        - OneAppuisDAF:
+          - Pt:
+            - 0.80082819046101150206595775671303272247314453125
+            - 0.80082819046101150206595775671303272247314453125
+            Incertitude:
+            - 1.46581298050294517310021547018550336360931396484375
+            - 1.46581298050294517310021547018550336360931396484375
+            NamePt: 6
+          - Pt:
+            - 0.80082819046101150206595775671303272247314453125
+            - 0.80082819046101150206595775671303272247314453125
+            Incertitude:
+            - 1.46581298050294517310021547018550336360931396484375
+            - 1.46581298050294517310021547018550336360931396484375
+            NamePt: 6
+        - OneAppuisDAF:
+          - Pt:
+            - 0.80082819046101150206595775671303272247314453125
+            - 0.80082819046101150206595775671303272247314453125
+            Incertitude:
+            - 1.46581298050294517310021547018550336360931396484375
+            - 1.46581298050294517310021547018550336360931396484375
+            NamePt: 6
+          - Pt:
+            - 0.80082819046101150206595775671303272247314453125
+            - 0.80082819046101150206595775671303272247314453125
+            Incertitude:
+            - 1.46581298050294517310021547018550336360931396484375
+            - 1.46581298050294517310021547018550336360931396484375
+            NamePt: 6
+        NameIm: NameIm
+      xml:
+        name: Global
+    DicoAppuisFlottant:
+      type: object
+      properties:
+        OneAppuisDAF:
+          type: array
+          items:
+            $ref: '#/components/schemas/OneAppuisDAF'
+      example:
+        OneAppuisDAF:
+        - Pt:
+          - 0.80082819046101150206595775671303272247314453125
+          - 0.80082819046101150206595775671303272247314453125
+          Incertitude:
+          - 1.46581298050294517310021547018550336360931396484375
+          - 1.46581298050294517310021547018550336360931396484375
+          NamePt: 6
+        - Pt:
+          - 0.80082819046101150206595775671303272247314453125
+          - 0.80082819046101150206595775671303272247314453125
+          Incertitude:
+          - 1.46581298050294517310021547018550336360931396484375
+          - 1.46581298050294517310021547018550336360931396484375
+          NamePt: 6
+    OneAppuisDAF:
+      type: object
+      properties:
+        Pt:
+          type: array
+          items:
+            type: number
+        NamePt:
+          type: integer
+          format: int64
+        Incertitude:
+          type: array
+          items:
+            type: number
+      example:
+        Pt:
+        - 0.80082819046101150206595775671303272247314453125
+        - 0.80082819046101150206595775671303272247314453125
+        Incertitude:
+        - 1.46581298050294517310021547018550336360931396484375
+        - 1.46581298050294517310021547018550336360931396484375
+        NamePt: 6
+    Orientation:
+      type: object
+      properties:
+        id:
+          type: string
+          format: int64
+      example:
+        id: id
+      xml:
+        name: Orientation
+    ApiResponse:
+      type: object
+      properties:
+        code:
+          type: integer
+          format: int32
+        type:
+          type: string
+        message:
+          type: string
+  securitySchemes:
+    petstore_auth:
+      type: oauth2
+      flows:
+        implicit:
+          authorizationUrl: http://petstore.swagger.io/oauth/dialog
+          scopes:
+            write:pets: modify pets in your account
+            read:pets: read your pets
+    api_key:
+      type: apiKey
+      name: api_key
+      in: header
+x-original-swagger-version: "2.0"
