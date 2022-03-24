@@ -85,8 +85,6 @@ paths:
           description: "Invalid parameters supplied"
         "404":
           description: "Image not found"
-      security:
-      - api_key: []
   /point2d/{imgURL}/{coordPoint2d}:
     get:
       tags:
