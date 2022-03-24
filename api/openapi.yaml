@@ -19,9 +19,9 @@ tags:
 - name: calib
   description: Calibration files
 - name: point2d
-  description: Point of appuie 2d
+  description: 2D support points 
 - name: point3d
-  description: Point of appui 3d
+  description: 3D support points 
 - name: aspro
   description: Command MicMac aspro
   externalDocs:
@@ -102,8 +102,8 @@ paths:
     get:
       tags:
       - point2d
-      summary: Create file containing point of appui 2d
-      description: Returns xml file describing coordinates of point 2d
+      summary: Create file containing 2D support points
+      description: Returns xml file describing coordinates of 2D points
       operationId: get2dPointOfAppuiFile
       parameters:
       - name: imgURL
@@ -148,8 +148,8 @@ paths:
     get:
       tags:
       - point3d
-      summary: Create file containing point of appui 3d
-      description: Returns xml file describing coordinates of points 3d
+      summary: Create file containing 3D support points
+      description: Returns xml file describing coordinates of 3D points
       operationId: get3dPointOfAppuiFile
       parameters:
       - name: imgURL
@@ -218,7 +218,7 @@ paths:
           format: byte
       - name: appui
         in: path
-        description: Point of appui 2d file
+        description: 2D support points file
         required: true
         style: simple
         explode: false
@@ -227,7 +227,7 @@ paths:
           format: byte
       - name: gcp
         in: path
-        description: Point of appui 2d file
+        description: 3D support points file
         required: true
         style: simple
         explode: false
