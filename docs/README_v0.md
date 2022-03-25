@@ -65,5 +65,3 @@ mm3d aspro 1957_DUR_452_0018.jpg Ori-CalInit gcp_1957_DUR_452_0018.xml appuis_19
 ```
 
 cf : computeResection() in [index.html](https://github.com/ThomasDBM/alegoria/blob/clean2/index.html) and [lauchMicMac.php](https://github.com/ThomasDBM/alegoria/blob/clean2/php/launchMicMac.php)
-
-test ci
