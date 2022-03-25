@@ -23,7 +23,7 @@ jobs:
       with:
         node-version: '10'
     - name: Check node and npm versions
-    - run: |
+      run: |
           node -v
           npm -v
     - name: Install dependencies
