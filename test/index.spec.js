@@ -8,7 +8,6 @@ describe('index', function () {
             .get('/docs/')
             .expect(200)
             .then((res) => {
-                console.log(res);
                 // expect(res.body).to.have.property('version')
                 // expect(res.body.version).to.be.a.string
                 // expect(res.body.version).to.equal('1.0.0')
