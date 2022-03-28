@@ -24,6 +24,7 @@ router.get('/:imgURL/:coordX/:coordY/', function (req, res, next) {
       .ele('PtIm').txt(listX[i] + ' ' + listY[i]).up().up()
   }
   const xml = root.end({ prettyPrint: true })
+  res.type('application/xml')
   res.send(xml)
 })
 

@@ -28,6 +28,7 @@ router.get('/:imgURL/:coordX/:coordY/:coordZ', function (req, res, next) {
   }
 
   const xml = root.end({ prettyPrint: true })
+  res.type('application/xml')
   res.send(xml)
 })
 
