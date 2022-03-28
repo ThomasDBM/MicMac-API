@@ -30,6 +30,7 @@ router.get('/:imgName/:conv/:PP/:F/:szIm/:cDist', function (req, res, next) {
       .up().up().up()
   
     const xml = root.end({ prettyPrint: true })
+    res.type('application/xml')
     res.send(xml)
 })
 
