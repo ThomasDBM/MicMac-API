@@ -6,7 +6,7 @@ const { create } = require('xmlbuilder2')
 /* GET point2d file. */
 router.get('/:imgURL/:coordX/:coordY/', function (req, res, next) {
   const { imgURL, coordX, coordY } = req.params
-  // test coordX.length == coordY.length
+
   const listX = coordX.split(',').map(elem => parseFloat(elem))
   const listY = coordY.split(',').map(elem => parseFloat(elem))
 
