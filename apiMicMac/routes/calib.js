@@ -3,7 +3,7 @@ const router = express.Router()
 
 const { create } = require('xmlbuilder2')
 
-/* GET users listing. */
+/* GET calibration file */
 router.get('/:imgName/:conv/:PP/:F/:szIm/:cDist', function (req, res, next) {
   const { imgName, conv, PP, F, szIm, cDist } = req.params
 
