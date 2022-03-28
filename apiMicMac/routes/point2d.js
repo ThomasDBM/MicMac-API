@@ -4,8 +4,8 @@ const router = express.Router()
 const { create } = require('xmlbuilder2')
 
 /* GET point2d file. */
-router.get('/:imgURL/:coordX/:coordY/', function (req, res, next) {
-  const { imgURL, coordX, coordY } = req.params
+router.get('/:imgName/:coordX/:coordY/', function (req, res, next) {
+  const { imgName, coordX, coordY } = req.params
 
   const listX = coordX.split(',').map(elem => parseFloat(elem))
   const listY = coordY.split(',').map(elem => parseFloat(elem))
@@ -16,7 +16,7 @@ router.get('/:imgURL/:coordX/:coordY/', function (req, res, next) {
   const root = create()
     .ele('SetOfMesureAppuisFlottants')
     .ele('MesureAppuiFlottant1Im')
-    .ele('NameIm').txt(imgURL).up()
+    .ele('NameIm').txt(imgName).up()
 
   for (let i = 0; i < listX.length; i++) {
     root.ele('OneMesureAF1I')

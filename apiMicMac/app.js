@@ -8,6 +8,7 @@ const indexRouter = require('./routes/index')
 const usersRouter = require('./routes/users')
 const point2dRouter = require('./routes/point2d')
 const point3dRouter = require('./routes/point3d')
+const calibRouter = require('./routes/calib')
 
 const app = express()
 
@@ -25,6 +26,7 @@ app.use('/', indexRouter)
 app.use('/users', usersRouter)
 app.use('/point2d', point2dRouter)
 app.use('/point3d', point3dRouter)
+app.use('/calib', calibRouter)
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {
