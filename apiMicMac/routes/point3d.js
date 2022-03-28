@@ -1,37 +1,34 @@
-var express = require('express');
-var router = express.Router();
+const express = require('express')
+const router = express.Router()
 
-const { create } = require('xmlbuilder2');
-
+const { create } = require('xmlbuilder2')
 
 /* GET point3d file. */
-router.get('/:imgURL/:coordX/:coordY/:coordZ', function(req, res, next) {
-  let { imgURL, coordX, coordY, coordZ} = req.params;
+router.get('/:imgURL/:coordX/:coordY/:coordZ', function (req, res, next) {
+  const { imgURL, coordX, coordY, coordZ } = req.params
 
-  let listX = coordX.split(',').map(elem => parseFloat(elem))
-  let listY = coordY.split(',').map(elem => parseFloat(elem))
-  let listZ = coordZ.split(',').map(elem => parseFloat(elem))
+  const listX = coordX.split(',').map(elem => parseFloat(elem))
+  const listY = coordY.split(',').map(elem => parseFloat(elem))
+  const listZ = coordZ.split(',').map(elem => parseFloat(elem))
 
-  if (listX.length != listY.length | listX.length != listZ.length){
-    return res.status(400).json({error: 'Invalid parameter(s) : Coordinates size does not match'});
+  if (listX.length !== listY.length | listX.length !== listZ.length) {
+    return res.status(400).json({ error: 'Invalid parameter(s) : Coordinates size does not match' })
   }
 
   const root = create()
     .ele('Global')
-      .ele('NameIm').txt(imgURL).up()
-      .ele('DicoAppuisFlottant');
-    
+    .ele('NameIm').txt(imgURL).up()
+    .ele('DicoAppuisFlottant')
+
   for (let i = 0; i < listX.length; i++) {
     root.ele('OneAppuisDAF')
-    .ele('Pt').txt(listX[i]+" "+listY[i]+" "+listZ[i]).up()
-    .ele('NamePt').txt(i+1).up()
-    .ele('Incertitude').txt('1 1 1').up().up()
-  }   
+      .ele('Pt').txt(listX[i] + ' ' + listY[i] + ' ' + listZ[i]).up()
+      .ele('NamePt').txt(i + 1).up()
+      .ele('Incertitude').txt('1 1 1').up().up()
+  }
 
-  const xml = root.end({ prettyPrint: true });    
-  console.log(xml)         
-  res.send(xml);
-    
-});
+  const xml = root.end({ prettyPrint: true })
+  res.send(xml)
+})
 
-module.exports = router;
+module.exports = router

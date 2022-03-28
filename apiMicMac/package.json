@@ -4,15 +4,19 @@
   "private": true,
   "scripts": {
     "start": "node ./bin/www",
-    "lint": "eslint ./routes"
+    "test": "./node_modules/.bin/mocha --exit --timeout 10000",
+    "lint": "npx eslint ./routes"
   },
   "dependencies": {
+    "chai": "^4.3.6",
     "cookie-parser": "~1.4.4",
     "debug": "~2.6.9",
     "express": "~4.16.1",
     "http-errors": "~1.6.3",
+    "mocha": "^9.2.2",
     "morgan": "~1.9.1",
     "pug": "2.0.0-beta11",
+    "supertest": "^6.2.2",
     "xmlbuilder2": "^3.0.2"
   },
   "devDependencies": {
