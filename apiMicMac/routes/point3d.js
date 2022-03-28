@@ -3,11 +3,6 @@ var router = express.Router();
 
 const { create } = require('xmlbuilder2');
 
-//global variables
-var i;
-var div, image, image_width, image_height, image_rendwidth, image_rendheight, image_offsetLeft, image_offsetTop;
-var xmlDoc, element1;
-
 
 /* GET point3d file. */
 router.get('/:imgURL/:coordX/:coordY/:coordZ', function(req, res, next) {
