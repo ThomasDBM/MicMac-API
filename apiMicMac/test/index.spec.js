@@ -62,3 +62,59 @@ describe('app', function () {
       .catch((err) => expect(err).to.be.undefined)
   })
 })
+
+describe('app', function () {
+  it('should return a valid response', function () {
+    return request(app)
+      .get('/calib/aa.jpg/jkjfd/4,5/5/5,1/2,5')
+      .expect(200)
+      .then((res) => {
+        expect(res.type).to.be.equal('application/xml')
+      })
+      .catch((err) => expect(err).to.be.undefined)
+  })
+})
+
+describe('app', function () {
+  it('should return an invalid parameter(s) response (PP)', function () {
+    return request(app)
+      .get('/calib/aa.jpg/jkjfd/4/5/5,1/2,5')
+      .expect(400)
+      .then((res) => {
+      })
+      .catch((err) => expect(err).to.be.undefined)
+  })
+})
+
+describe('app', function () {
+  it('should return an invalid parameter(s) response (F)', function () {
+    return request(app)
+      .get('/calib/aa.jpg/jkjfd/4,5/5,4/5,1/2,5')
+      .expect(400)
+      .then((res) => {
+      })
+      .catch((err) => expect(err).to.be.undefined)
+  })
+})
+
+describe('app', function () {
+  it('should return an invalid parameter(s) response (SizeIm)', function () {
+    return request(app)
+      .get('/calib/aa.jpg/jkjfd/4,5/5/5/2,5')
+      .expect(400)
+      .then((res) => {
+      })
+      .catch((err) => expect(err).to.be.undefined)
+  })
+})
+
+describe('app', function () {
+  it('should return an invalid parameter(s) response (Cdist)', function () {
+    return request(app)
+      .get('/calib/aa.jpg/jkjfd/4,5/5/5,1/2,5,4')
+      .expect(400)
+      .then((res) => {
+      })
+      .catch((err) => expect(err).to.be.undefined)
+  })
+})
