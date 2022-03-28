@@ -14,7 +14,9 @@ jobs:
     - uses: actions/setup-node@v2
       with:
         node-version: '10'
-    - run: npm install
+    - run: |
+        cd apiMicMac/
+        npm install
   test:
     runs-on: ubuntu-20.04
     steps:
@@ -24,6 +26,7 @@ jobs:
         node-version: '10'
     - name: Check node and npm versions
       run: |
+          cd apiMicMac/
           node -v
           npm -v
     - name: Install dependencies
