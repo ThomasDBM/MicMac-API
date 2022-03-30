@@ -32,6 +32,8 @@ router.post('/:imgURL/', function (req, res, next) {
   console.log(imgURL)
 
   const imgName = imgURL.replace('.jpg', '')
+  const imgNameForCalib = imgName.replace(/_/g, '')
+
   console.log('terminal : ' + process.env.ComSpec)
 //   const resHelp = execSync("/var/www/micmac/bin/mm3d aspro 1957_DUR_452_0018.jpg Ori-CalInit gcp_1957_DUR_452_0018.xml appuis_1957_DUR_452_0018.xml", {
 //     cwd: '/home/formation/Documents/alegoria/MicMac-API/apiMicMac/workspace'
@@ -58,6 +60,8 @@ router.post('/:imgURL/', function (req, res, next) {
   const point3d = req.body.file.point3d
   const calib = req.body.file.calib
 
+  console.log(calib)
+
   const point2dXML = OBJtoXML(point2d)
   const point3dXML = OBJtoXML(point3d)
   const calibXML = OBJtoXML(calib)
@@ -65,7 +69,7 @@ router.post('/:imgURL/', function (req, res, next) {
   execSync('touch workspace/aa.jpg', { encoding: 'utf-8' })
   execSync(`echo  "${point2dXML}" > workspace/appuis_${imgName}.xml`, { encoding: 'utf-8' })
   execSync(`echo  "${point3dXML}" > workspace/gcp_${imgName}.xml`, { encoding: 'utf-8' })
-  execSync(`echo  "${calibXML}" > workspace/Ori-CalInit/AutoCal_Foc-50000_Cam-${imgURL}.xml`, { encoding: 'utf-8' })
+  execSync(`echo  "${calibXML}" > workspace/Ori-CalInit/AutoCal_Foc-50000_Cam-${imgNameForCalib}.xml`, { encoding: 'utf-8' })
 
   const resHelp = execSync(`/var/www/micmac/bin/mm3d aspro ${imgURL} Ori-CalInit gcp_${imgName}.xml appuis_${imgName}.xml`, {
     cwd: '/home/formation/Documents/alegoria/MicMac-API/apiMicMac/workspace'
