@@ -29,6 +29,9 @@ function OBJtoXML (obj) {
 /* GET orientation file. */
 router.post('/:imgURL/', function (req, res, next) {
   const { imgURL } = req.params
+  if (Object.keys(req.body).length === 0) {
+    return res.status(400).json({ error: 'Invalid parameter(s) : Body is empty' })
+  }
 
   const imgName = imgURL.replace('.jpg', '')
   const imgNameForCalib = imgName.replace(/_/g, '')
@@ -44,13 +47,20 @@ router.post('/:imgURL/', function (req, res, next) {
 
   // Get neccessary files
   execSync(`mkdir -p workspace${imgName}/Ori-CalInit`)
-  execSync(`wget -c ${url} -O ${imgURL}`,
-    { cwd: `/home/formation/Documents/alegoria/MicMac-API/apiMicMac/workspace${imgName}` })
+  try {
+    execSync(`wget -c ${url} -O ${imgURL}`,
+      { cwd: `/home/formation/Documents/alegoria/MicMac-API/apiMicMac/workspace${imgName}` })
+}
+  catch (err) {
+    execSync(`rm -R workspace${imgName}`, { encoding: 'utf-8' })
+    return res.status(400).json({ error: 'Invalid parameter(s) : Could not download image' })
+  }
+
   execSync(`echo  "${point2dXML}" > workspace${imgName}/appuis_${imgName}.xml`, { encoding: 'utf-8' })
   execSync(`echo  "${point3dXML}" > workspace${imgName}/gcp_${imgName}.xml`, { encoding: 'utf-8' })
   execSync(`echo  "${calibXML}" > workspace${imgName}/Ori-CalInit/AutoCal_Foc-50000_Cam-${imgNameForCalib}.xml`, { encoding: 'utf-8' })
 
-  const micmacChantier = execSync('cat workspace/ORIGINAL_MicMac-LocalChantierDescripteur_original.xml', { encoding: 'utf-8' })
+  const micmacChantier = execSync('cat chantier/ORIGINAL_MicMac-LocalChantierDescripteur_original.xml', { encoding: 'utf-8' })
   execSync(`echo "${micmacChantier.replace(/image_name/g, imgName)}" > workspace${imgName}/MicMac-LocalChantierDescripteur.xml`)
 
   // Execute MicMac command
