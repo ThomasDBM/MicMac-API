@@ -50,8 +50,7 @@ router.post('/:imgURL/', function (req, res, next) {
   try {
     execSync(`wget -c ${url} -O ${imgURL}`,
       { cwd: `/home/formation/Documents/alegoria/MicMac-API/apiMicMac/workspace${imgName}` })
-}
-  catch (err) {
+  } catch (err) {
     execSync(`rm -R workspace${imgName}`, { encoding: 'utf-8' })
     return res.status(400).json({ error: 'Invalid parameter(s) : Could not download image' })
   }

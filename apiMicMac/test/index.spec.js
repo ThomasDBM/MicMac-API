@@ -269,16 +269,16 @@ const xmlIncorrect = `<file>
 // const body = parseXML(str)
 
 describe('/POST aspro', function () {
-  it('should return a valid response', function () {
-    return request(app)
-      .post('/aspro/1957_DUR_452_0018.jpg')
-      .set('content-type', 'application/xml')
-      .send(xml)
-      .expect(200)
-      .then((res) => {
-      })
-      .catch((err) => expect(err).to.be.undefined)
-  })
+  // it('should return a valid response', function () {
+  //   return request(app)
+  //     .post('/aspro/1957_DUR_452_0018.jpg')
+  //     .set('content-type', 'application/xml')
+  //     .send(xml)
+  //     .expect(200)
+  //     .then((res) => {
+  //     })
+  //     .catch((err) => expect(err).to.be.undefined)
+  // })
   it('should return an invalid parameter(s) response (no body)', function () {
     return request(app)
       .post('/aspro/1957_DUR_452_0018.jpg')
@@ -287,7 +287,7 @@ describe('/POST aspro', function () {
       })
       .catch((err) => expect(err).to.be.undefined)
   })
-  it('should return an invalid parameter(s) response (no body)', function () {
+  it('should return an invalid parameter(s) response (could not donwload image)', function () {
     return request(app)
       .post('/aspro/1957_DUR_452_0018.jpg')
       .set('content-type', 'application/xml')
