@@ -2,7 +2,7 @@ const createError = require('http-errors')
 const express = require('express')
 const path = require('path')
 const cookieParser = require('cookie-parser')
-const xmlParser = require('express-xml-bodyparser')
+const xmlparser = require('express-xml-bodyparser')
 const logger = require('morgan')
 
 const indexRouter = require('./routes/index')
@@ -18,11 +18,13 @@ const app = express()
 app.set('views', path.join(__dirname, 'views'))
 app.set('view engine', 'pug')
 
+app.use(xmlparser({
+  normalizeTags: false
+}))
 app.use(logger('dev'))
 app.use(express.json())
 app.use(express.urlencoded({ extended: false }))
 app.use(cookieParser())
-app.use(xmlParser())
 app.use(express.static(path.join(__dirname, 'public')))
 
 app.use('/', indexRouter)

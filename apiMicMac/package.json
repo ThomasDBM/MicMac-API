@@ -18,9 +18,7 @@
     "morgan": "~1.9.1",
     "pug": "2.0.0-beta11",
     "supertest": "^6.2.2",
-    "xml-js": "^1.6.11",
-    "xmlbuilder2": "^3.0.2",
-    "xmlhttprequest": "^1.8.0"
+    "xmlbuilder2": "^3.0.2"
   },
   "devDependencies": {
     "eslint": "^7.32.0",
