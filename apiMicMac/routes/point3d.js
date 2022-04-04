@@ -4,8 +4,8 @@ const router = express.Router()
 const { create } = require('xmlbuilder2')
 
 /* GET point3d file. */
-router.get('/:imgURL/:coordX/:coordY/:coordZ', function (req, res, next) {
-  const { imgURL, coordX, coordY, coordZ } = req.params
+router.get('/:imgName/:coordX/:coordY/:coordZ', function (req, res, next) {
+  const { imgName, coordX, coordY, coordZ } = req.params
 
   const listX = coordX.split(',').map(elem => parseFloat(elem))
   const listY = coordY.split(',').map(elem => parseFloat(elem))
@@ -17,7 +17,7 @@ router.get('/:imgURL/:coordX/:coordY/:coordZ', function (req, res, next) {
 
   const root = create()
     .ele('Global')
-    .ele('NameIm').txt(imgURL).up()
+    .ele('NameIm').txt(imgName).up()
     .ele('DicoAppuisFlottant')
 
   for (let i = 0; i < listX.length; i++) {
@@ -28,6 +28,7 @@ router.get('/:imgURL/:coordX/:coordY/:coordZ', function (req, res, next) {
   }
 
   const xml = root.end({ prettyPrint: true })
+  res.type('application/xml')
   res.send(xml)
 })
 

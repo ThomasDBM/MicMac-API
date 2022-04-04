@@ -1,0 +1,32 @@
+<Global>
+    <ChantierDescripteur>
+        <LocCamDataBase>
+            <CameraEntry>
+                <Name>image_name</Name>
+                <SzCaptMm> 4.9 8.7 </SzCaptMm>
+                <ShortName>image_name</ShortName>
+            </CameraEntry>
+        </LocCamDataBase>
+        <KeyedNamesAssociations>
+            <Calcs>
+                <Arrite> 1 1 </Arrite>
+                <Direct>
+                    <PatternTransform>(.*).jpg </PatternTransform>
+                    <CalcName>image_name</CalcName>
+                </Direct>
+            </Calcs>
+            <Key>NKS-Assoc-STD-CAM </Key>
+        </KeyedNamesAssociations>
+        <KeyedNamesAssociations>
+            <Calcs>
+                <Arrite> 1 1 </Arrite>
+                <Direct>
+                    <PatternTransform>(.*).jpg </PatternTransform>
+                    <CalcName>50.0</CalcName>
+                </Direct>
+            </Calcs>
+            <Key>NKS-Assoc-STD-FOC </Key>
+        </KeyedNamesAssociations>
+    </ChantierDescripteur>
+</Global>
+
