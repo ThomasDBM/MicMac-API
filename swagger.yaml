@@ -1,0 +1,374 @@
+swagger: "2.0"
+info:
+  description: "Server for API MicMac"
+  version: "1.0.0"
+  title: "Swagger API MicMac"
+  termsOfService: "http://swagger.io/terms/"
+  contact:
+    email: "apiteam@swagger.io"
+  license:
+    name: "Apache 2.0"
+    url: "http://www.apache.org/licenses/LICENSE-2.0.html"
+host: "localhost"
+basePath: "/"
+tags:
+- name: "calib"
+  description: "Calibration files"
+- name: "point2d"
+  description: "Point of appuie 2d"
+- name: "point3d"
+  description: "Point of appui 3d"
+- name: "aspro"
+  description: "Command MicMac aspro"
+  externalDocs:
+    description: "Find out more about MicMac aspro command"
+    url: "https://micmac.ensg.eu/index.php/Aspro"
+schemes:
+- "https"
+- "http"
+paths:
+  /calib/{imgURL}/{PP}/{F}/{SzIm}/{Cdist}/:
+    get:
+      tags:
+      - "calib"
+      summary: "Create calibration file from metadata"
+      description: "Returns xml file describing calibration"
+      operationId: "getCalib"
+      produces:
+      - "application/xml"
+      parameters:
+      - name: "imgURL"
+        in: "path"
+        description: "URL of the image"
+        required: true
+        type: "string"
+        format: "int64"
+      - name: "PP"
+        in: "path"
+        description: "Principal point"
+        required: true
+        type: array
+        collectionFormat: csv
+        items:
+          type: integer
+        format: "int64"
+      - name: "F"
+        in: "path"
+        description: "Focal"
+        required: true
+        type: "integer"
+        format: "int64"
+      - name: "SzIm"
+        in: "path"
+        description: "Size of the image"
+        required: true
+        type: array
+        collectionFormat: csv
+        items:
+          type: integer
+        format: "int64"
+      - name: "Cdist"
+        in: "path"
+        description: "Distorsion coefficient"
+        required: true
+        type: array
+        collectionFormat: csv
+        items:
+          type: integer
+        format: "int64"
+      responses:
+        "200":
+          description: "A xml calibration file"
+          schema:
+            $ref: "#/definitions/Calibration"
+        "400":
+          description: "Invalid parameters supplied"
+        "404":
+          description: "Image not found"
+  /point2d/{imgURL}/{coordPoint2d}:
+    get:
+      tags:
+      - "point2d"
+      summary: "Create file containing point of appui 2d"
+      description: "Returns xml file describing coordinates of point 2d"
+      operationId: "get2dPointOfAppuiFile"
+      produces:
+      - "application/xml"
+      - "application/json"
+      parameters:
+      - name: "imgURL"
+        in: "path"
+        description: "URL of the image"
+        required: true
+        type: "string"
+        format: "int64"
+      - name: "coordPoint2d"
+        in: "path"
+        description: "ID of pet that needs to be fetched"
+        required: true
+        type: array
+        collectionFormat: csv
+        items:
+          type: array
+          collectionFormat: csv
+          items:
+            type: number
+        format: "int64"
+      responses:
+        "200":
+          description: "successful operation"
+          schema:
+            $ref: "#/definitions/Point2d"
+        "400":
+          description: "Invalid parameters supplied"
+        "404":
+          description: "Image not found"
+  /point3d/{imgURL}/{coordPoint3d}:
+    get:
+      tags:
+      - "point3d"
+      summary: "Create file containing point of appui 3d"
+      description: "Returns xml file describing coordinates of points 3d"
+      operationId: "get3dPointOfAppuiFile"
+      produces:
+      - "application/xml"
+      - "application/json"
+      parameters:
+      - name: "imgURL"
+        in: "path"
+        description: "URL of the image"
+        required: true
+        type: "string"
+        format: "int64"
+      - name: "coordPoint3d"
+        in: "path"
+        description: "ID of pet that needs to be fetched"
+        required: true
+        type: array
+        collectionFormat: csv
+        items:
+          type: array
+          collectionFormat: csv
+          items:
+            type: number
+        format: "int64"
+      responses:
+        "200":
+          description: "successful operation"
+          schema:
+            $ref: "#/definitions/Point3d"
+        "400":
+          description: "Invalid parameters supplied"
+        "404":
+          description: "Image not found"
+  /aspro/{imgURL}/{autoCal}/{appui}/{gcp}:
+    post:
+      tags:
+      - "aspro"
+      summary: "Launch MicMac command aspro"
+      description: "Calculate orientation file of the image"
+      operationId: "getOrientation"
+      produces:
+      - "application/xml"
+      - "application/json"
+      parameters:
+      - name: "imgURL"
+        in: "path"
+        description: "URL of the image"
+        required: true
+        type: "string"
+        format: "int64"
+      - name: "autoCal"
+        in: "path"
+        description: "Calibration file"
+        required: true
+        type: string
+        format: byte    # base64-encoded file contents
+      - name: "appui"
+        in: "path"
+        description: "Point of appui 2d file"
+        required: true
+        type: string
+        format: byte    # base64-encoded file contents
+      - name: "gcp"
+        in: "path"
+        description: "Point of appui 2d file"
+        required: true
+        type: string
+        format: byte    # base64-encoded file contents
+      responses:
+        "200":
+          description: "successful operation"
+          schema:
+            $ref: "#/definitions/Orientation"
+        "400":
+          description: "Invalid parameters supplied"
+        "404":
+          description: "Image not found"
+          
+securityDefinitions:
+  petstore_auth:
+    type: "oauth2"
+    authorizationUrl: "http://petstore.swagger.io/oauth/dialog"
+    flow: "implicit"
+    scopes:
+      write:pets: "modify pets in your account"
+      read:pets: "read your pets"
+  api_key:
+    type: "apiKey"
+    name: "api_key"
+    in: "header"
+    
+definitions:
+  Calibration:
+    type: "object"
+    properties:
+      NameIn:
+        type: "string"
+        format: "int64"
+      CalibrationInternConique:
+        type: "array"
+        format: "int64"
+        items:
+          $ref: "#/definitions/CalibrationInternConique"
+    xml:
+      name: "ExportApero"
+  CalibrationInternConique:
+    type: "object"
+    properties:
+      KnownConv:
+        type: "string"
+        format: "int64"
+      PP:
+        type: "array"
+        items:
+          type: "integer"
+        format: "int64"
+      F:
+        type: "number"
+        format: "int64"
+      SzIm:
+        type: "array"
+        items:
+          type: "integer"
+        format: "int64"
+      CalibDistorsion:
+        type: "array"
+        format: "int64"
+        xml:
+          name: "CalibDistorsion"
+          wrapped: true
+        items:
+          $ref: "#/definitions/ModRad"
+    xml:
+      name: "CalibrationInternConique"
+      
+  ModRad:
+    type: "object"
+    properties:
+      Cdist:
+        type: "number"
+        format: "int64"
+    xml:
+      name: "ModRad"
+      
+  Point2d:
+    type: "object"
+    properties:
+      MesureAppuiFlottant1Im:
+        type: "array"
+        format: "int64"
+        items:
+          $ref: "#/definitions/MesureAppuiFlottant1Im"
+    xml:
+      name: "SetOfMesureAppuisFlottants"
+      
+  MesureAppuiFlottant1Im:
+    type: "object"
+    properties:
+      NameIm:
+        type: "string"
+        format: "int64"
+      OneMesureAF1I:
+        type: "array"
+        format: "int64"
+        items:
+          $ref: "#/definitions/OneMesureAF1I"
+          
+  OneMesureAF1I:
+    type: "object"
+    properties:
+      NamePt:
+        type: "integer"
+        format: "int64"
+      PtIm:
+        type: "array"
+        items:
+          type: integer
+        format: "int64"
+        
+  Point3d:
+    type: "object"
+    properties:
+      NameIm:
+        type: "string"
+        format: "int64"
+      DicoAppuisFlottant:
+        type: "array"
+        format: "int64"
+        items:
+          $ref: "#/definitions/DicoAppuisFlottant"
+    xml:
+      name: "Global"
+      
+  DicoAppuisFlottant:
+    type: "object"
+    properties:
+      OneAppuisDAF:
+        type: "array"
+        format: "int64"
+        items:
+          $ref: "#/definitions/OneAppuisDAF"
+  
+  OneAppuisDAF:
+    type: "object"
+    properties:
+      Pt:
+        type: "array"
+        items:
+          type: "number"
+        format: "int64"
+      NamePt:
+        type: "integer"
+        format: "int64"
+      Incertitude:
+        type: "array"
+        items:
+          type: "number"
+        format: "int64"
+        
+  Orientation:
+    type: "object"
+    required:
+    - "name"
+    - "photoUrls"
+    properties:
+      id:
+        type: "string"
+        format: "int64"
+    xml:
+      name: "Orientation"
+      
+  ApiResponse:
+    type: "object"
+    properties:
+      code:
+        type: "integer"
+        format: "int32"
+      type:
+        type: "string"
+      message:
+        type: "string"
+externalDocs:
+  description: "Find out more about Swagger"
+  url: "http://swagger.io"
