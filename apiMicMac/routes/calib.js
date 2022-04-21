@@ -26,7 +26,7 @@ router.get('/:imgName/:conv/:PP/:F/:szIm/:cDist', function (req, res, next) {
     .ele('SzIm').txt(listSzIm[0] + ' ' + listSzIm[1]).up()
     .ele('CalibDistortion')
     .ele('ModRad')
-    .ele('Cdist').txt(listCDist[0] + ' ' + listCDist[1]).up()
+    .ele('CDist').txt(listCDist[0] + ' ' + listCDist[1]).up()
     .up().up().up()
 
   const xml = root.end({ prettyPrint: true })

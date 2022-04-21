@@ -49,7 +49,7 @@ router.post('/:imgURL/', function (req, res, next) {
   execSync(`mkdir -p workspace${imgName}/Ori-CalInit`)
   try {
     execSync(`wget -c ${url} -O ${imgURL}`,
-      { cwd: `/home/formation/Documents/alegoria/MicMac-API/apiMicMac/workspace${imgName}` })
+      { cwd: `./workspace${imgName}` })
   } catch (err) {
     execSync(`rm -R workspace${imgName}`, { encoding: 'utf-8' })
     return res.status(400).json({ error: 'Invalid parameter(s) : Could not download image' })
@@ -63,9 +63,13 @@ router.post('/:imgURL/', function (req, res, next) {
   execSync(`echo "${micmacChantier.replace(/image_name/g, imgName)}" > workspace${imgName}/MicMac-LocalChantierDescripteur.xml`)
 
   // Execute MicMac command
-  execSync(`/var/www/micmac/bin/mm3d aspro ${imgURL} Ori-CalInit gcp_${imgName}.xml appuis_${imgName}.xml`, {
-    cwd: `/home/formation/Documents/alegoria/MicMac-API/apiMicMac/workspace${imgName}`
-  })
+  try {
+    execSync(`/etc/opt/micmac/bin/mm3d aspro ${imgURL} Ori-CalInit gcp_${imgName}.xml appuis_${imgName}.xml`, {
+      cwd: `./workspace${imgName}`
+    })
+  } catch (error) {
+    return res.status(500).json({ error: 'Invalid parameter(s) : Could launch MicMac Command' })
+  }
 
   // Read orientation file
   const orientation = execSync(`cat workspace${imgName}/Ori-Aspro/Orientation-${imgURL}.xml`, { encoding: 'utf-8' })
