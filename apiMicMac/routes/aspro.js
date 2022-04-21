@@ -45,7 +45,6 @@ router.post('/:imgURL/', function (req, res, next) {
   const point3dXML = OBJtoXML(point3d)
   const calibXML = OBJtoXML(calib)
 
-
   // Get neccessary files
   execSync(`mkdir -p workspace${imgName}/Ori-CalInit`)
   try {
