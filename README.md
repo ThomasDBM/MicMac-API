@@ -53,16 +53,13 @@ Create appuie file ( cf : [scene2d.js](https://github.com/ThomasDBM/alegoria/blo
 ### Do :
 Create GCP file ( cf : [scene3dv2.js](https://github.com/ThomasDBM/alegoria/blob/clean2/js/scene3dv2.js) -> function export3dCoord() : build xml data, [fetch3dcoord.php](https://github.com/ThomasDBM/alegoria/blob/clean2/php/fetch3dcoord.php) -> save xml data in a file) 
 - - -    
-### Route : `/aspro/{imgURL}/{AutoCal}/{appui}/{gcp}`
+### Route : `/aspro/{imgName}`
 ### Method : **POST**
 ### Return : orientation_imgname.xml
 ### Mandatory parameters :
-- **{imgURL}** : (string) url to dowload original image
-- **{AutoCal}** : (file) calibration file
-- **{appui}** : (file) file of 2d point of appuis
-- **{gcp}** : (file) file of 3d point of appui
+- **{img}** : (string) name of the original image
 ### Do :
-Lauch command MicMac : aspro.
+Lauch command MicMac : aspro with datas in the body.
 
 **MicMac command short description :**
 
